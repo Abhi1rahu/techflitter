@@ -12,6 +12,8 @@ use App\Models\BasicDetails;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AddDataMail;
 use App\Mail\DeleteDataMail;
+use App\Helpers\LogHelper;
+use Illuminate\Support\Facades\Log;
 
 
 class HomeController extends Controller
@@ -27,6 +29,7 @@ public function home(Request $request)
 
 Public function saveDetails(Request $request){
 
+    try {
     $data = $request->all();
     $validator = $this->validateGame($request);
  
@@ -47,7 +50,7 @@ Public function saveDetails(Request $request){
 
     unset($data['_token']);
     unset($data['file']);
-    
+    $d = 2/0;
     $this->detailsm()->saveDetails($data);
 
     $details = [
@@ -60,7 +63,10 @@ Public function saveDetails(Request $request){
     Mail::to($data['email'])->send(new AddDataMail($details));
 
     return redirect('/view-details')->with('status','Details added successfully.');
-
+    }catch (\Exception $e) {
+        LogHelper::log('saveDetails', $e->getMessage(), 'exception',$e->getLine());
+        return redirect('/view-details');
+    }
 }
 
 public function validateGame($request){
@@ -89,6 +95,7 @@ public function viewDetails(){
 
 public function deleteDetails($id){
 
+    try {
     $data = $this->detailsm()->viewDetailsById($id);
     if (Storage::exists($data->file_name.$file_extension)) {
         Storage::delete($data->file_name.$file_extension);
@@ -102,6 +109,10 @@ public function deleteDetails($id){
     Mail::to($data['email'])->send(new DeleteDataMail($details));
 
     return redirect('/view-details')->with('status','Details added successfully.');
+    }catch (\Exception $e) {
+        LogHelper::log('deleteDetails', $e->getMessage(), 'exception',$e->getLine());
+        return redirect('/view-details');
+    }
 }
 
 public function detailsm()
