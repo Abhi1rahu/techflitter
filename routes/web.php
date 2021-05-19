@@ -18,5 +18,5 @@ Route::get("/",[HomeController::Class,'home']);
 Route::post("/save-details",[HomeController::Class,'saveDetails']);
 
 Route::get("/view-details",[HomeController::Class,'viewDetails']);
-Route::get("/delete-details",[HomeController::Class,'deleteDetails']);
+Route::any("/delete-details",[HomeController::Class,'deleteDetails']);
 //Route::any('/', 'HomeController@home');

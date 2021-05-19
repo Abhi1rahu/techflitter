@@ -99,8 +99,8 @@ public function deleteDetails($id){
 
     try {
     $data = $this->detailsm()->viewDetailsById($id);
-    if (Storage::exists($data->file_name.$file_extension)) {
-        Storage::delete($data->file_name.$file_extension);
+    if ($exists = Storage::disk('s3')->has('files/'.$data->file_name.'.'.$file_extension)) {
+        Storage::disk('s3')->delete('files/'.$data->file_name.'.'.$file_extension);
     }
     $details = [
         'title' => 'Mail from techflitter for delete details',

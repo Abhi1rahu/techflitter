@@ -128,7 +128,7 @@
                                     <div class="col-sm-12 col-md-12 col-xs-12">  
                                         <div class="float-right">  
                                             <!-- <button class="btn btn-danger rounded-0" type="submit">Cancel</button>   -->
-                                            <button class="btn btn-primary rounded-0" type="submit">Add</button>  
+                                            <button class="btn btn-primary rounded-0" type="submit" value="Add">Add</button>  
                                         </div>                            
                                     </div>  
                                 </div>  
