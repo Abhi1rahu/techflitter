@@ -41,22 +41,24 @@ Public function saveDetails(Request $request){
     $file = $request->file('file');
     $file_name = str_replace(" ","-",substr($file->getClientOriginalName(),0,strrpos($file->getClientOriginalName(),'.')));
     $file_extension = $file->getClientOriginalExtension();
-
-    Storage::put($file_name.$file_extension, file_get_contents($file), 'public');
+    $filePathMain = '/files/'.$file_name.'.'.$file_extension;
+    // Storage::put($file_name.$file_extension, file_get_contents($file), 'public');
+    Storage::disk('s3')->put($filePathMain, file_get_contents($file), 'public');
     $storagePath = 'http://127.0.0.1:8080'.Storage::disk('local')->getAdapter()->getPathPrefix().$file_name.'.'.$file_extension;
   
+    $pathOfAwsBucket = "https://techflitter-test.s3.ap-south-1.amazonaws.com/files/".$file_name.'.'.$file_extension;
     $data['file_name'] = $file_name;
     $data['file_extension'] = $file_extension;
 
     unset($data['_token']);
     unset($data['file']);
-    $d = 2/0;
+    // $d = 2/0;
     $this->detailsm()->saveDetails($data);
 
     $details = [
         'title' => 'Mail from techflitter for adding details',
         'body' => 'This is generic reminder from techflitter team that we have added your data and stored your file. You can see your file using this link.
-        ' .$storagePath,
+        ' .$pathOfAwsBucket,
         'name' => $data['name'],
     ];
 
