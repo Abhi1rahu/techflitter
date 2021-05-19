@@ -81,7 +81,7 @@
                                 <td>{{$d->email}}</td>
                                 <td>{{$d->mobile}}</td>
                                 <td>{{$d->file_name}}</td>
-                                <td><a href="delete-details/{{$d->id }}" class=""><b>Delete</b></a></td>
+                                <td><a href="delete/{{$d->id }}" class=""><b>Delete</b></a></td>
                             </tr>
                             @empty
                             <tr><td colspan='5' class="text-center">

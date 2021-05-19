@@ -29,6 +29,6 @@ class DeleteDataMail extends Mailable
      */
     public function build()
     {
-        return $this->subject("Added Data from techflitter")->view('emails.delete-email');
+        return $this->subject("Delete Data from techflitter")->view('emails.delete-email');
     }
 }

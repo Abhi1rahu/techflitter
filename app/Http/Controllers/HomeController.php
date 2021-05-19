@@ -99,18 +99,20 @@ public function deleteDetails($id){
 
     try {
     $data = $this->detailsm()->viewDetailsById($id);
-    if ($exists = Storage::disk('s3')->has('files/'.$data->file_name.'.'.$file_extension)) {
-        Storage::disk('s3')->delete('files/'.$data->file_name.'.'.$file_extension);
+    $this->detailsm()->deleteDetailsById($id);
+    if ($exists = Storage::disk('s3')->has('files/'.$data->file_name.'.'.$data->file_extension)) {
+        Storage::disk('s3')->delete('files/'.$data->file_name.'.'.$data->file_extension);
     }
+
     $details = [
         'title' => 'Mail from techflitter for delete details',
         'body' => 'This is generic reminder from techflitter team that we have delete your data. Thank you for connect with us.',
         'name' => $data->name,
     ];
 
-    Mail::to($data['email'])->send(new DeleteDataMail($details));
+    Mail::to($data->email)->send(new DeleteDataMail($details));
 
-    return redirect('/view-details')->with('status','Details added successfully.');
+    return redirect('/view-details')->with('status','Details deleted successfully.');
     }catch (\Exception $e) {
         LogHelper::log('deleteDetails', $e->getMessage(), 'exception',$e->getLine());
         return redirect('/view-details');

@@ -22,6 +22,12 @@ class BasicDetails extends Model
     }
 
     public function viewDetailsById($id){
-        return BasicDetails::where('id',$id)->get();
+        return BasicDetails::where('id',$id)->first();
     }
+
+    public function deleteDetailsById($id){
+        $basicDetails = BasicDetails::find($id);
+        $basicDetails->delete();
+    }
+
 }
